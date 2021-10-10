@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>授权确认</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 well">
+            <h3>请选择</h3>
+            应用名 : <span th:text="${authorizationRequest.clientId}">clientId</span>
+
+            <form id='confirmationForm' name='confirmationForm' th:action="@{/oauth/authorize}" method='post'>
+                <input name='user_oauth_approval' value='true' type='hidden' />
+                <input type='hidden' th:name='${_csrf.parameterName}' th:value='${_csrf.token}' />
+                <ul>
+                    <li th:each="s:${scopes}">
+                        <div class='form-group'>
+                            <span th:text="${s.key}"></span>
+                            <input type='radio' th:name="${s.key}" value='true' checked>Approve</input>
+                            <input type='radio' th:name="${s.key}" value='false'>Deny</input></div>
+                    </li>
+                </ul>
+                <input name='authorize' value='授权' type='submit' />
+            </form>
+
+            <form id='denialForm' name='denialForm' th:action="@{/oauth/authorize}" method='post'>
+                <input name='user_oauth_approval' value='false' type='hidden' />
+                <input name='deny' value='拒绝' type='submit' />
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
